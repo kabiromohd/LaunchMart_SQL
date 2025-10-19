@@ -17,3 +17,14 @@ The Database was setup via a docker compose.
 
 ![task1](https://github.com/user-attachments/assets/b393e741-4ebb-4e3a-b6c8-ec33150151db)
 
+## Task 2
+- For each customer return customer_id, full_name, total_revenue (sum of total_amount from orders). Sort descending.
+
+![task2](https://github.com/user-attachments/assets/23d139b7-6d3a-41d7-972f-5cdc9fd16e3c)
+
+## Task 3
+- Return the top 5 customers by total_revenue with their rank.
+
+![task3](https://github.com/user-attachments/assets/649abc81-1d9f-43ab-b803-15290e205dcf)
+
+
