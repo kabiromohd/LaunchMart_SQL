@@ -47,6 +47,29 @@ The Database was setup via a docker compose.
 
 ![task7](https://github.com/user-attachments/assets/6ded85e6-4b8c-4361-bd18-9a4d1e8d44b5)
 
+## Task 8
+- List customers who placed more than 1 order and show customer_id, full_name, order_count, first_order_date, last_order_date.
+
+![task8](https://github.com/user-attachments/assets/a8efab92-1560-4ec9-a632-be63d91a4f54)
+
+## Task 9
+- Compute total loyalty points per customer. Include customers with 0 points.
+
+![task9](https://github.com/user-attachments/assets/0c3f5110-5553-4f5a-b6a7-9f90ac22cf01)
+
+## Task 10
+- Assign loyalty tiers based on total points:
+
+Bronze: < 100
+Silver: 100–499
+Gold: >= 500
+Output: tier, tier_count, tier_total_points
+
+![task10](https://github.com/user-attachments/assets/a2a76e98-884f-4cdd-bdad-9faf69a407cc)
+
+
+
+
 
 
 
