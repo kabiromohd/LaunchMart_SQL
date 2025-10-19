@@ -27,4 +27,26 @@ The Database was setup via a docker compose.
 
 ![task3](https://github.com/user-attachments/assets/649abc81-1d9f-43ab-b803-15290e205dcf)
 
+## Task 4
+- Produce a table with year, month, monthly_revenue for all months in 2023 ordered chronologically.
+
+![task4](https://github.com/user-attachments/assets/d00b31cc-67b9-462a-abc8-fab364c951a8)
+
+## Task 5
+- Find customers with no orders in the last 60 days relative to 2023-12-31 (i.e., consider last active date up to 2023-12-31). Return customer_id, full_name, last_order_date.
+
+![task5](https://github.com/user-attachments/assets/84a877a0-4a82-4633-9185-78f53f21fe09)
+
+## Task 6
+- Calculate average order value (AOV) for each customer: return customer_id, full_name, aov (average total_amount of their orders). Exclude customers with no orders.
+
+![task6](https://github.com/user-attachments/assets/d3718365-f308-425e-82d3-9a01933aac7c)
+
+## Task 7
+- For all customers who have at least one order, compute customer_id, full_name, total_revenue, spend_rank where spend_rank is a dense rank, highest spender = rank 1.
+
+![task7](https://github.com/user-attachments/assets/6ded85e6-4b8c-4361-bd18-9a4d1e8d44b5)
+
+
+
 
