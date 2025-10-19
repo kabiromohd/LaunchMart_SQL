@@ -67,6 +67,18 @@ Output: tier, tier_count, tier_total_points
 
 ![task10](https://github.com/user-attachments/assets/a2a76e98-884f-4cdd-bdad-9faf69a407cc)
 
+## Task 11
+- Identify customers who spent more than ₦50,000 in total but have less than 200 loyalty points. Return customer_id, full_name, total_spend, total_points.
+
+![task11](https://github.com/user-attachments/assets/8d4af110-e139-427f-9135-af31ac16c154)
+
+## Task 12
+- Flag customers as churn_risk if they have no orders in the last 90 days (relative to 2023-12-31) AND are in the Bronze tier. Return customer_id, full_name, last_order_date, total_points.
+
+![task12](https://github.com/user-attachments/assets/9b2de198-9635-48d9-b2f6-913961f1d32d)
+
+
+
 
 
 
