@@ -10,9 +10,13 @@ This dataset includes customers, products, orders, order items, and loyalty poin
 ## Setup
 To create the database tables, I have been provided with the database DDL statements in the 01_schema.sql file. After creating the table, used the seed data provided in the 02_see_data.sql file to insert sample data into the tables. See the 03_launchMart_erd.png file for the ERD to understand the relationship between the tables.
 
-The Database was setup via a docker compose. clone repo and run below command on your terminal to get started
+The Database was setup via a docker compose. Clone repo and run below command on your terminal to get started
 
 ```
+git clone https://github.com/kabiromohd/LaunchMart_SQL.git
+
+cd LaunchMart_SQL
+
 docker-compose up
 ```
 
