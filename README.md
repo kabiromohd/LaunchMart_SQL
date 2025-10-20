@@ -27,6 +27,13 @@ Run the SQL scripts provided in 01_schema.sql and then 02_see_data.sql to popula
 ## Task 1
 - Count the total number of customers who joined in 2023.
 
+```
+SELECT COUNT(*) AS customers_joined_2023
+FROM customers
+WHERE join_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+```
+
 ![task1](https://github.com/user-attachments/assets/b393e741-4ebb-4e3a-b6c8-ec33150151db)
 
 ## Task 2
