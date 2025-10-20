@@ -18,8 +18,8 @@ git clone https://github.com/kabiromohd/LaunchMart_SQL.git
 cd LaunchMart_SQL
 
 docker-compose up
-
 ```
+
 Connect to pgAdmin via ```localhost:8090```
 
 Run the SQL scripts provided in 01_schema.sql and then 02_see_data.sql to populate the database.
@@ -31,7 +31,6 @@ Run the SQL scripts provided in 01_schema.sql and then 02_see_data.sql to popula
 SELECT COUNT(*) AS customers_joined_2023
 FROM customers
 WHERE join_date BETWEEN '2023-01-01' AND '2023-12-31';
-
 ```
 
 ![task1](https://github.com/user-attachments/assets/b393e741-4ebb-4e3a-b6c8-ec33150151db)
@@ -167,10 +166,49 @@ ORDER BY spend_rank;
 ## Task 8
 - List customers who placed more than 1 order and show customer_id, full_name, order_count, first_order_date, last_order_date.
 
+```
+WITH order_stats AS (
+    SELECT
+        customer_id,
+        COUNT(*) AS order_count,
+        MIN(order_date) AS first_order_date,
+        MAX(order_date) AS last_order_date
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT
+    c.customer_id,
+    c.full_name,
+    os.order_count,
+    os.first_order_date,
+    os.last_order_date
+FROM customers c
+JOIN order_stats os ON c.customer_id = os.customer_id
+WHERE os.order_count > 1
+ORDER BY os.order_count DESC;
+```
+
 ![task8](https://github.com/user-attachments/assets/a8efab92-1560-4ec9-a632-be63d91a4f54)
 
 ## Task 9
 - Compute total loyalty points per customer. Include customers with 0 points.
+
+```
+ITH loyalty_summary AS (
+    SELECT
+        customer_id,
+        COALESCE(SUM(points_earned), 0) AS total_points
+    FROM loyalty_points
+    GROUP BY customer_id
+)
+SELECT
+    c.customer_id,
+    c.full_name,
+    COALESCE(l.total_points, 0) AS total_points
+FROM customers c
+LEFT JOIN loyalty_summary l ON c.customer_id = l.customer_id
+ORDER BY total_points DESC;
+```
 
 ![task9](https://github.com/user-attachments/assets/0c3f5110-5553-4f5a-b6a7-9f90ac22cf01)
 
@@ -182,10 +220,62 @@ Silver: 100–499
 Gold: >= 500
 Output: tier, tier_count, tier_total_points
 
+```
+WITH points_total AS (
+    SELECT
+        customer_id,
+        COALESCE(SUM(points_earned), 0) AS total_points
+    FROM loyalty_points
+    GROUP BY customer_id
+),
+tiered AS (
+    SELECT
+        customer_id,
+        CASE
+            WHEN total_points >= 500 THEN 'Gold'
+            WHEN total_points >= 100 THEN 'Silver'
+            ELSE 'Bronze'
+        END AS tier,
+        total_points
+    FROM points_total
+)
+SELECT
+    tier,
+    COUNT(*) AS tier_count,
+    SUM(total_points) AS tier_total_points
+FROM tiered
+GROUP BY tier
+ORDER BY CASE tier WHEN 'Gold' THEN 1 WHEN 'Silver' THEN 2 ELSE 3 END;
+```
+
 ![task10](https://github.com/user-attachments/assets/a2a76e98-884f-4cdd-bdad-9faf69a407cc)
 
 ## Task 11
 - Identify customers who spent more than ₦50,000 in total but have less than 200 loyalty points. Return customer_id, full_name, total_spend, total_points.
+
+```
+WITH spend AS (
+    SELECT customer_id, SUM(total_amount) AS total_spend
+    FROM orders
+    GROUP BY customer_id
+),
+points AS (
+    SELECT customer_id, SUM(points_earned) AS total_points
+    FROM loyalty_points
+    GROUP BY customer_id
+)
+SELECT
+    c.customer_id,
+    c.full_name,
+    COALESCE(s.total_spend, 0) AS total_spend,
+    COALESCE(p.total_points, 0) AS total_points
+FROM customers c
+LEFT JOIN spend s ON c.customer_id = s.customer_id
+LEFT JOIN points p ON c.customer_id = p.customer_id
+WHERE COALESCE(s.total_spend, 0) > 50000
+  AND COALESCE(p.total_points, 0) < 200
+ORDER BY total_spend DESC;
+```
 
 ![task11](https://github.com/user-attachments/assets/8d4af110-e139-427f-9135-af31ac16c154)
 
