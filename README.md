@@ -126,10 +126,41 @@ ORDER BY lo.last_order_date NULLS FIRST;
 ## Task 6
 - Calculate average order value (AOV) for each customer: return customer_id, full_name, aov (average total_amount of their orders). Exclude customers with no orders.
 
+```
+SELECT
+    c.customer_id,
+    c.full_name,
+    ROUND(AVG(o.total_amount), 2) AS aov
+FROM customers c
+INNER JOIN orders o 
+    ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.full_name
+ORDER BY aov DESC;
+```
+
 ![task6](https://github.com/user-attachments/assets/d3718365-f308-425e-82d3-9a01933aac7c)
 
 ## Task 7
 - For all customers who have at least one order, compute customer_id, full_name, total_revenue, spend_rank where spend_rank is a dense rank, highest spender = rank 1.
+
+```
+WITH spend_summary AS (
+    SELECT
+        c.customer_id,
+        c.full_name,
+        SUM(o.total_amount) AS total_revenue
+    FROM customers c
+    JOIN orders o ON o.customer_id = c.customer_id
+    GROUP BY c.customer_id, c.full_name
+)
+SELECT
+    customer_id,
+    full_name,
+    total_revenue,
+    DENSE_RANK() OVER (ORDER BY total_revenue DESC) AS spend_rank
+FROM spend_summary
+ORDER BY spend_rank;
+```
 
 ![task7](https://github.com/user-attachments/assets/6ded85e6-4b8c-4361-bd18-9a4d1e8d44b5)
 
