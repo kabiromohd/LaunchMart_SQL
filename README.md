@@ -39,20 +39,87 @@ WHERE join_date BETWEEN '2023-01-01' AND '2023-12-31';
 ## Task 2
 - For each customer return customer_id, full_name, total_revenue (sum of total_amount from orders). Sort descending.
 
+```
+SELECT
+    c.customer_id,
+    c.full_name,
+-- Handle customers with no orders using COALESCE
+    COALESCE(SUM(o.total_amount), 0) AS total_revenue
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.customer_id
+GROUP BY c.customer_id, c.full_name
+ORDER BY total_revenue DESC;
+```
+
 ![task2](https://github.com/user-attachments/assets/23d139b7-6d3a-41d7-972f-5cdc9fd16e3c)
 
 ## Task 3
 - Return the top 5 customers by total_revenue with their rank.
+
+```
+WITH customer_revenue AS (
+    SELECT
+        c.customer_id,
+        c.full_name,
+        COALESCE(SUM(o.total_amount), 0) AS total_revenue
+    FROM customers c
+    LEFT JOIN orders o ON o.customer_id = c.customer_id
+    GROUP BY c.customer_id, c.full_name
+)
+SELECT
+    customer_id,
+    full_name,
+    total_revenue,
+    RANK() OVER (ORDER BY total_revenue DESC) AS revenue_rank
+FROM customer_revenue
+ORDER BY revenue_rank
+LIMIT 5;
+```
 
 ![task3](https://github.com/user-attachments/assets/649abc81-1d9f-43ab-b803-15290e205dcf)
 
 ## Task 4
 - Produce a table with year, month, monthly_revenue for all months in 2023 ordered chronologically.
 
+```
+WITH months AS (
+    SELECT generate_series(DATE '2023-01-01', DATE '2023-12-01', INTERVAL '1 month') AS month_start
+)
+SELECT
+    EXTRACT(YEAR FROM m.month_start) AS year,
+    TO_CHAR(m.month_start, 'Month') AS month,
+    COALESCE(SUM(o.total_amount), 0) AS monthly_revenue
+FROM months m
+LEFT JOIN orders o
+    ON o.order_date >= m.month_start
+   AND o.order_date < (m.month_start + INTERVAL '1 month')
+GROUP BY m.month_start
+ORDER BY m.month_start;
+```
+
 ![task4](https://github.com/user-attachments/assets/d00b31cc-67b9-462a-abc8-fab364c951a8)
 
 ## Task 5
 - Find customers with no orders in the last 60 days relative to 2023-12-31 (i.e., consider last active date up to 2023-12-31). Return customer_id, full_name, last_order_date.
+
+```
+WITH last_orders AS (
+    SELECT
+        customer_id,
+        MAX(order_date) AS last_order_date
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT
+    c.customer_id,
+    c.full_name,
+    lo.last_order_date
+FROM customers c
+LEFT JOIN last_orders lo ON c.customer_id = lo.customer_id
+WHERE lo.last_order_date IS NULL
+   OR lo.last_order_date <= DATE '2023-12-31' - INTERVAL '60 days'
+ORDER BY lo.last_order_date NULLS FIRST;
+```
 
 ![task5](https://github.com/user-attachments/assets/84a877a0-4a82-4633-9185-78f53f21fe09)
 
