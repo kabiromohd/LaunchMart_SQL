@@ -282,6 +282,46 @@ ORDER BY total_spend DESC;
 ## Task 12
 - Flag customers as churn_risk if they have no orders in the last 90 days (relative to 2023-12-31) AND are in the Bronze tier. Return customer_id, full_name, last_order_date, total_points.
 
+```
+WITH last_orders AS (
+    SELECT
+        customer_id,
+        MAX(order_date) AS last_order_date
+    FROM orders
+    GROUP BY customer_id
+),
+points_total AS (
+    SELECT
+        customer_id,
+        COALESCE(SUM(points_earned), 0) AS total_points
+    FROM loyalty_points
+    GROUP BY customer_id
+),
+tiered AS (
+    SELECT
+        p.customer_id,
+        p.total_points,
+        CASE
+            WHEN p.total_points >= 500 THEN 'Gold'
+            WHEN p.total_points >= 100 THEN 'Silver'
+            ELSE 'Bronze'
+        END AS tier
+    FROM points_total p
+)
+SELECT
+    c.customer_id,
+    c.full_name,
+    lo.last_order_date,
+    t.total_points,
+    TRUE AS churn_risk
+FROM customers c
+LEFT JOIN last_orders lo ON c.customer_id = lo.customer_id
+LEFT JOIN tiered t ON c.customer_id = t.customer_id
+WHERE (lo.last_order_date IS NULL OR lo.last_order_date <= DATE '2023-12-31' - INTERVAL '90 days')
+  AND t.tier = 'Bronze'
+ORDER BY lo.last_order_date NULLS FIRST, t.total_points;
+```
+
 ![task12](https://github.com/user-attachments/assets/9b2de198-9635-48d9-b2f6-913961f1d32d)
 
 
