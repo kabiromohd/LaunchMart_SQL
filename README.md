@@ -18,8 +18,11 @@ git clone https://github.com/kabiromohd/LaunchMart_SQL.git
 cd LaunchMart_SQL
 
 docker-compose up
-```
 
+```
+Connect to pgAdmin via localhost:8090
+
+Run the SQL script provided in 01_schema.sql and the 02_see_data.sql to populate the database.
 
 ## Task 1
 - Count the total number of customers who joined in 2023.
