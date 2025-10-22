@@ -8,9 +8,9 @@ As a data engineer at LaunchMart, my manager has asked me to explore the company
 This dataset includes customers, products, orders, order items, and loyalty points earned tables.
 
 ## Setup
-To create the database tables, I have been provided with the database DDL statements in the 01_schema.sql file. After creating the table, used the seed data provided in the 02_see_data.sql file to insert sample data into the tables. See the 03_launchMart_erd.png file for the ERD to understand the relationship between the tables.
+To create the database tables, I have been provided with the database DDL statements in the 01_schema.sql file. After creating the table, used the seed data provided in the 02_see_data.sql file to insert data into the tables. The 03_launchMart_erd.png file provides the ERD to understand the relationship between the tables.
 
-The Database was setup via a docker compose. Clone repo and run below command on your terminal to get started
+The Database was setup via a docker compose. Clone repo and run below command on your terminal to get started.
 
 ```
 git clone https://github.com/kabiromohd/LaunchMart_SQL.git
@@ -22,7 +22,7 @@ docker-compose up
 
 Connect to pgAdmin via ```localhost:8090```
 
-Run the SQL scripts provided in 01_schema.sql and then 02_see_data.sql to populate the database.
+Copy and run the SQL scripts provided in 01_schema.sql and then 02_see_data.sql in the PgAdmin to populate the database.
 
 ## Task 1
 - Count the total number of customers who joined in 2023.
